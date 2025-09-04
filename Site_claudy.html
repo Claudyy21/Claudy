@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Ambientes - IoT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --cor-principal: #2563eb;
+            --cor-secundaria: #1e40af;
+            --cor-fundo: #f8fafc;
+            --cor-branca: #ffffff;
+            --cor-cinza: #64748b;
+            --cor-cinza-claro: #e2e8f0;
+            --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--cor-fundo);
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--cor-principal);
+            color: var(--cor-branca);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--sombra);
+        }
+
+        header h1 {
+            margin: 0 0 1rem 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        header i {
+            margin-right: 0.5rem;
+        }
+
+        header img {
+            height: 80px;
+            margin-top: 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .environment {
+            background-color: var(--cor-branca);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--sombra);
+            border: 1px solid var(--cor-cinza-claro);
+        }
+
+        .environment h2 {
+            text-align: center;
+            color: var(--cor-secundaria);
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .sensors-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .sensor {
+            background-color: var(--cor-branca);
+            border: 1px solid var(--cor-cinza-claro);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sensor::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cor-principal), var(--cor-secundaria));
+        }
+
+        .sensor:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .sensor h3 {
+            color: var(--cor-secundaria);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .sensor-icon {
+            color: var(--cor-principal);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 280px;
+            border: none;
+            border-radius: 8px;
+            background-color: #fafafa;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        iframe:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1.5rem;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            .environment {
+                padding: 1.5rem;
+            }
+
+            .sensors-grid {
+                max-width: 100%;
+                gap: 1.5rem;
+            }
+
+            .sensor {
+                max-width: 100%;
+            }
+
+            iframe {
+                height: 240px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sensor {
+                padding: 1.5rem;
+            }
+
+            .environment h2 {
+                font-size: 1.4rem;
+            }
+
+            iframe {
+                height: 220px;
+            }
+        }
+    </style>
+    <script>
+        function showEnvironment(env) {
+            const environments = document.getElementsByClassName('environment');
+            for (let i = 0; i < environments.length; i++) {
+                environments[i].classList.add('hidden');
+            }
+            document.getElementById(env).classList.remove('hidden');
+        }
+
+        // Mostrar o primeiro ambiente por padrão
+        window.onload = () => showEnvironment('ambiente1');
+    </script>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fas fa-seedling"></i> Monitoramento de Ambientes - IoT</h1>
+        <img src="imagens/logoIFFAR.png" alt="Instituto Federal Farroupilha - Campus Panambi" />
+    </header>
+
+    <div class="container">
+        <section id="ambiente1" class="environment">
+            <h2>Dados de Controle de Ambiente</h2>
+
+            <div class="sensors-grid">
+                <div class="sensor">
+                    <h3>
+                        <i class="fas fa-ruler-combined sensor-icon"></i>
+                        Sensor 1 - Distância
+                    </h3>
+                    <iframe src="https://thingspeak.com/channels/3035850/widgets/1122850"></iframe>
+                </div>
+
+                <div class="sensor">
+                    <h3>
+                        <i class="fas fa-thermometer-half sensor-icon"></i>
+                        Sensor 2 - Temperatura
+                    </h3>
+                    <iframe src="https://thingspeak.com/channels/3035850/widgets/1122852"></iframe>
+                </div>
+
+                <div class="sensor">
+                    <h3>
+                        <i class="fas fa-tint sensor-icon"></i>
+                        Sensor 3 - Umidade
+                    </h3>
+                    <iframe src="https://thingspeak.com/channels/3035850/widgets/1122853"></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
